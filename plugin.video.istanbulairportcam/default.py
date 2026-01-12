@@ -33,12 +33,43 @@ def http_get(url):
 
 def extract_m3u8(html):
     cleaned = html.replace("\\/", "/")
+
+    # 1) Pokušaj kao ranije: full URL u jednom komadu
     m = M3U8_RE.search(cleaned)
-    return m.group(1) if m else None
+    if m:
+        return m.group(1)
+
+    # 2) Fallback: izvuci path + anahtar + sure, pa sastavi URL
+    # Path do playlist-a (nekad je bez protokola i domene)
+    path_m = re.search(r'(igaistanbul/[a-zA-Z0-9_-]+/playlist\.m3u8)', cleaned, re.IGNORECASE)
+    if not path_m:
+        # hard fallback ako path ne nađe (za tvoj slučaj znamo da je apron2)
+        path = "igaistanbul/apron2/playlist.m3u8"
+    else:
+        path = path_m.group(1)
+
+    # Tokeni (anahtar i sure) se često pojavljuju odvojeno u JS-u
+    key_m = re.search(r'anahtar["\']?\s*[:=]\s*["\']?([A-Za-z0-9_-]+)', cleaned)
+    sure_m = re.search(r'sure["\']?\s*[:=]\s*["\']?(\d+)', cleaned)
+
+    if not (key_m and sure_m):
+        # nekad je "anahtar=" već u tekstu, pa pokušaj i to
+        key_m = key_m or re.search(r'anahtar=([A-Za-z0-9_-]+)', cleaned)
+        sure_m = sure_m or re.search(r'sure=(\d+)', cleaned)
+
+    if not (key_m and sure_m):
+        return None
+
+    anahtar = key_m.group(1)
+    sure = sure_m.group(1)
+
+    # Domen koji si već vidio u pravom linku
+    return f"https://cdn-iga.yayin.com.tr/{path}?anahtar={anahtar}&sure={sure}"
 
 def get_stream_url():
     html = http_get(PLAYER_URL)
     return extract_m3u8(html)
+
 
 def list_root():
     handle = int(sys.argv[1])
