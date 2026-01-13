@@ -124,7 +124,7 @@ def list_root():
     li5 = xbmcgui.ListItem(label="Istanbul – Metrohan (IBB LIVE)")
     li5.setInfo("video", {"title": "Istanbul – Metrohan (IBB LIVE)"})
     li5.setProperty("IsPlayable", "true")
-    url5 = sys.argv[0] + "?action=play&cam=ibb_sahmet"
+    url5 = sys.argv[0] + "?action=play&cam=ibb_metrohan"
     xbmcplugin.addDirectoryItem(handle, url5, li5, isFolder=False)
 
     xbmcplugin.endOfDirectory(handle)
