@@ -54,6 +54,11 @@ IBB_HEADERS = (
     "&Origin=https://istanbuluseyret.ibb.gov.tr"
 )
 
+def airport_variant(stream_url, mount):
+    # mijenja /igaistanbul/<nesto>/ u /igaistanbul/<mount>/
+    return re.sub(r'(https://cdn-iga\.yayin\.com\.tr/igaistanbul/)[^/]+(/)', r'\1' + mount + r'\2', stream_url)
+
+
 def http_get(url):
     headers = {
         "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 "
@@ -108,9 +113,20 @@ def list_root():
     xbmcplugin.setPluginCategory(handle, ADDON_NAME)
     xbmcplugin.setContent(handle, "videos")
 
+    liA = xbmcgui.ListItem(label="Istanbul Airport – Apron 2 (LIVE)")
+    liA.setInfo("video", {"title": "Istanbul Airport – Apron 2 (LIVE)"})
+    liA.setProperty("IsPlayable", "true")
+    xbmcplugin.addDirectoryItem(handle, sys.argv[0] + "?action=play&cam=airport_apron2", liA, False)
+
+    liB = xbmcgui.ListItem(label="Istanbul Airport – Apron (LIVE)")
+    liB.setInfo("video", {"title": "Istanbul Airport – Apron (LIVE)"})
+    liB.setProperty("IsPlayable", "true")
+    xbmcplugin.addDirectoryItem(handle, sys.argv[0] + "?action=play&cam=airport_apron", liB, False)
+
+
     # 1) Airport
-    li1 = xbmcgui.ListItem(label="Istanbul Airport – Apron (LIVE)")
-    li1.setInfo("video", {"title": "Istanbul Airport – Apron (LIVE)"})
+    li1 = xbmcgui.ListItem(label="Istanbul Airport – ApronG (LIVE)")
+    li1.setInfo("video", {"title": "Istanbul Airport – ApronG (LIVE)"})
     li1.setProperty("IsPlayable", "true")
     url1 = sys.argv[0] + "?action=play&cam=airport"
     xbmcplugin.addDirectoryItem(handle, url1, li1, isFolder=False)
@@ -206,7 +222,7 @@ def play(cam):
         xbmcplugin.setResolvedUrl(handle, True, li)
         return
 
-    # default: airport (dynamic token)
+    # Airport cams (dynamic token)
     stream_url = None
     try:
         stream_url = get_airport_stream_url()
@@ -223,7 +239,12 @@ def play(cam):
         xbmcplugin.setResolvedUrl(handle, False, xbmcgui.ListItem())
         return
 
-    xbmc.log(f"[{ADDON_NAME}] Resolved airport stream: {stream_url}", xbmc.LOGINFO)
+    # Biramo mount po odabiru
+    if cam == "airport_apron":
+        stream_url = airport_variant(stream_url, "apron")
+    else:
+        # default neka bude apron2
+        stream_url = airport_variant(stream_url, "apron2")
 
     airport_headers = (
         "User-Agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 "
@@ -235,6 +256,7 @@ def play(cam):
     li = xbmcgui.ListItem(path=stream_url + "|" + airport_headers)
     li.setProperty("IsPlayable", "true")
     xbmcplugin.setResolvedUrl(handle, True, li)
+
 
 
 def router(paramstring):
