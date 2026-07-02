@@ -19,7 +19,7 @@ M3U8_RE = re.compile(
 )
 
 # --- IBB (static HLS chunklist) ---
-BASE = "https://kamerayayin.ibb.istanbul/turistikcam/"
+BASE = "https://kamerayayin.ibb.istanbul/turistikcam"
 
 IBB_EMINONU_CHUNKLIST = f"{BASE}/eminonu.stream/playlist.m3u8"
 IBB_BEYAZIT_CHUNKLIST = f"{BASE}/beyazitmeydan.stream/playlist.m3u8"
@@ -67,9 +67,15 @@ IBB_CAMS = {
 
 # Headers koje browser šalje (po tvom Network screenshotu)
 IBB_HEADERS = (
-    "User-Agent=Mozilla/5.0"
-    "&Referer=https://istanbuluseyret.ibb.gov.tr/"
+    "User-Agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 "
+    "(KHTML, like Gecko) Chrome/149.0.0.0 Safari/537.36"
+    "&Accept=*/*"
+    "&Accept-Language=en-US,en;q=0.9,bs;q=0.8"
     "&Origin=https://istanbuluseyret.ibb.gov.tr"
+    "&Referer=https://istanbuluseyret.ibb.gov.tr/"
+    "&Sec-Fetch-Dest=empty"
+    "&Sec-Fetch-Mode=cors"
+    "&Sec-Fetch-Site=cross-site"
 )
 
 def airport_variant(stream_url, mount):
