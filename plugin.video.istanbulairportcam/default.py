@@ -132,6 +132,27 @@ def get_airport_stream_url():
     html = http_get(PLAYER_URL)
     return extract_m3u8(html)
 
+
+def get_ibb_chunklist_url(playlist_url):
+    headers = {
+        "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 "
+                      "(KHTML, like Gecko) Chrome/149.0.0.0 Safari/537.36",
+        "Accept": "*/*",
+        "Referer": "https://istanbuluseyret.ibb.gov.tr/",
+        "Origin": "https://istanbuluseyret.ibb.gov.tr"
+    }
+
+    req = urllib.request.Request(playlist_url, headers=headers)
+    with urllib.request.urlopen(req, timeout=15) as resp:
+        txt = resp.read().decode("utf-8", "ignore")
+
+    for line in txt.splitlines():
+        line = line.strip()
+        if line and not line.startswith("#"):
+            return urllib.parse.urljoin(playlist_url, line)
+
+    return playlist_url        
+
 def list_root():
     handle = int(sys.argv[1])
     xbmcplugin.setPluginCategory(handle, ADDON_NAME)
@@ -259,16 +280,34 @@ def list_root():
 def play(cam):
     handle = int(sys.argv[1])
 
-    # IBB cams (static)
+    # IBB cams
     if cam in IBB_CAMS:
-        url = IBB_CAMS[cam] + "|" + IBB_HEADERS
+        playlist_url = IBB_CAMS[cam]
+
+        try:
+            chunklist_url = get_ibb_chunklist_url(playlist_url)
+        except Exception as e:
+            xbmc.log(f"[{ADDON_NAME}] IBB playlist error: {e}", xbmc.LOGERROR)
+            chunklist_url = playlist_url
+
+        headers = (
+            "User-Agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 "
+            "(KHTML, like Gecko) Chrome/149.0.0.0 Safari/537.36"
+            "&Accept=*/*"
+            "&Accept-Language=en-US,en;q=0.9,bs;q=0.8"
+            "&Referer=" + urllib.parse.quote(playlist_url, safe="")
+        )
+
+        url = chunklist_url + "|" + headers
         xbmc.log(f"[{ADDON_NAME}] Playing {cam}: {url}", xbmc.LOGINFO)
+
         li = xbmcgui.ListItem(path=url)
         li.setProperty("IsPlayable", "true")
+        li.setMimeType("application/vnd.apple.mpegurl")
         xbmcplugin.setResolvedUrl(handle, True, li)
         return
 
-    # Airport cams (dynamic token)
+    # Airport cams
     stream_url = None
     try:
         stream_url = get_airport_stream_url()
@@ -285,11 +324,9 @@ def play(cam):
         xbmcplugin.setResolvedUrl(handle, False, xbmcgui.ListItem())
         return
 
-    # Biramo mount po odabiru
     if cam == "airport_apron":
         stream_url = airport_variant(stream_url, "apron")
     else:
-        # default neka bude apron2
         stream_url = airport_variant(stream_url, "apron2")
 
     airport_headers = (
