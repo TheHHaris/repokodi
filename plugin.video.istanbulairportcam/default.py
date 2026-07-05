@@ -138,20 +138,38 @@ def get_ibb_chunklist_url(playlist_url):
         "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 "
                       "(KHTML, like Gecko) Chrome/149.0.0.0 Safari/537.36",
         "Accept": "*/*",
+        "Accept-Language": "en-US,en;q=0.9,bs;q=0.8",
         "Referer": "https://istanbuluseyret.ibb.gov.tr/",
-        "Origin": "https://istanbuluseyret.ibb.gov.tr"
+        "Origin": "https://istanbuluseyret.ibb.gov.tr",
+        "Sec-Fetch-Dest": "empty",
+        "Sec-Fetch-Mode": "cors",
+        "Sec-Fetch-Site": "cross-site",
     }
 
     req = urllib.request.Request(playlist_url, headers=headers)
     with urllib.request.urlopen(req, timeout=15) as resp:
         txt = resp.read().decode("utf-8", "ignore")
 
+    chunklist_url = playlist_url
     for line in txt.splitlines():
         line = line.strip()
         if line and not line.startswith("#"):
-            return urllib.parse.urljoin(playlist_url, line)
+            chunklist_url = urllib.parse.urljoin(playlist_url, line)
+            break
 
-    return playlist_url        
+    # drugi request, kao Chrome kada pređe sa playlist na chunklist
+    chunk_headers = {
+        "User-Agent": headers["User-Agent"],
+        "Accept": "*/*",
+        "Accept-Language": "en-US,en;q=0.9,bs;q=0.8",
+        "Referer": playlist_url,
+    }
+
+    req2 = urllib.request.Request(chunklist_url, headers=chunk_headers)
+    with urllib.request.urlopen(req2, timeout=15) as resp:
+        resp.read(1024)
+
+    return chunklist_url      
 
 def list_root():
     handle = int(sys.argv[1])
