@@ -18,85 +18,79 @@ M3U8_RE = re.compile(
     re.IGNORECASE
 )
 
-# --- IBB (static HLS chunklist) ---
+# --- IBB cameras ---
 BASE = "https://kamerayayin.ibb.istanbul/turistikcam"
 
-IBB_EMINONU_CHUNKLIST = f"{BASE}/eminonu.stream/playlist.m3u8"
-IBB_BEYAZIT_CHUNKLIST = f"{BASE}/beyazitmeydan.stream/playlist.m3u8"
-IBB_SAHMET_CHUNKLIST = f"{BASE}/sultanahmet2.stream/playlist.m3u8"
-IBB_METROHAN_CHUNKLIST = f"{BASE}/metrohan.stream/playlist.m3u8"
-IBB_KAPALICARSI_CHUNKLIST = f"{BASE}/misircarsisi.stream/playlist.m3u8"
-IBB_BEYAZITKULESI_CHUNKLIST = f"{BASE}/beyazitkulesi2.stream/playlist.m3u8"
-IBB_CAMLICA_CHUNKLIST = f"{BASE}/buyukcamlica.stream/playlist.m3u8"
-IBB_KADIKOY_CHUNKLIST = f"{BASE}/kadikoy.stream/playlist.m3u8"
-IBB_ORTAKOY_CHUNKLIST = f"{BASE}/ortakoy.stream/playlist.m3u8"
-IBB_PIERELOTI_CHUNKLIST = f"{BASE}/pierreloti.stream/playlist.m3u8"
-IBB_SAHMET1_CHUNKLIST = f"{BASE}/sultanahmet1.stream/playlist.m3u8"
-IBB_TAKSIM_CHUNKLIST = f"{BASE}/taksim.stream/playlist.m3u8"
-IBB_KIZKULESI_CHUNKLIST = f"{BASE}/kizkulesi.stream/playlist.m3u8"
-IBB_ANADOLUHISARI_CHUNKLIST = f"{BASE}/anadoluhisari.stream/playlist.m3u8"
-IBB_EYUPSULTAN_CHUNKLIST = f"{BASE}/eyupsultan.stream/playlist.m3u8"
-IBB_HIDIVKASRI_CHUNKLIST = f"{BASE}/hidivkasri.stream/playlist.m3u8"
-IBB_KUCUKCEKMECE_CHUNKLIST = f"{BASE}/kucukcekmece.stream/playlist.m3u8"
-IBB_SALACAK_CHUNKLIST = f"{BASE}/salacak.stream/playlist.m3u8"
-IBB_SARACHANE_CHUNKLIST = f"{BASE}/sarachane.stream/playlist.m3u8"
-IBB_USKUDAR_CHUNKLIST = f"{BASE}/uskudar.stream/playlist.m3u8"
-
 IBB_CAMS = {
-    "ibb_eminonu": IBB_EMINONU_CHUNKLIST,
-    "ibb_beyazit": IBB_BEYAZIT_CHUNKLIST,
-    "ibb_sahmet": IBB_SAHMET_CHUNKLIST,
-    "ibb_metrohan": IBB_METROHAN_CHUNKLIST,
-    "ibb_kapalicarsi": IBB_KAPALICARSI_CHUNKLIST,
-    "ibb_bkulesi": IBB_BEYAZITKULESI_CHUNKLIST,
-    "ibb_camlica": IBB_CAMLICA_CHUNKLIST,
-    "ibb_kadikoy": IBB_KADIKOY_CHUNKLIST,
-    "ibb_ortakoy": IBB_ORTAKOY_CHUNKLIST,
-    "ibb_piereloti": IBB_PIERELOTI_CHUNKLIST,
-    "ibb_sahmet1": IBB_SAHMET1_CHUNKLIST,
-    "ibb_taksim": IBB_TAKSIM_CHUNKLIST,
-    "ibb_kizkulesi": IBB_KIZKULESI_CHUNKLIST,
-    "ibb_anadoluhisari": IBB_ANADOLUHISARI_CHUNKLIST,
-    "ibb_eyupsultan": IBB_EYUPSULTAN_CHUNKLIST,
-    "ibb_hidivkasri": IBB_HIDIVKASRI_CHUNKLIST,
-    "ibb_kucukcekmece": IBB_KUCUKCEKMECE_CHUNKLIST,
-    "ibb_salacak": IBB_SALACAK_CHUNKLIST,
-    "ibb_sarachane": IBB_SARACHANE_CHUNKLIST,
-    "ibb_uskudar": IBB_USKUDAR_CHUNKLIST
+    "ibb_eminonu": f"{BASE}/eminonu.stream/playlist.m3u8",
+    "ibb_beyazit": f"{BASE}/beyazitmeydan.stream/playlist.m3u8",
+    "ibb_sahmet": f"{BASE}/sultanahmet2.stream/playlist.m3u8",
+    "ibb_metrohan": f"{BASE}/metrohan.stream/playlist.m3u8",
+    "ibb_kapalicarsi": f"{BASE}/misircarsisi.stream/playlist.m3u8",
+    "ibb_bkulesi": f"{BASE}/beyazitkulesi2.stream/playlist.m3u8",
+    "ibb_camlica": f"{BASE}/buyukcamlica.stream/playlist.m3u8",
+    "ibb_kadikoy": f"{BASE}/kadikoy.stream/playlist.m3u8",
+    "ibb_ortakoy": f"{BASE}/ortakoy.stream/playlist.m3u8",
+    "ibb_piereloti": f"{BASE}/pierreloti.stream/playlist.m3u8",
+    "ibb_sahmet1": f"{BASE}/sultanahmet1.stream/playlist.m3u8",
+    "ibb_taksim": f"{BASE}/taksim.stream/playlist.m3u8",
+    "ibb_kizkulesi": f"{BASE}/kizkulesi.stream/playlist.m3u8",
+    "ibb_anadoluhisari": f"{BASE}/anadoluhisari.stream/playlist.m3u8",
+    "ibb_eyupsultan": f"{BASE}/eyupsultan.stream/playlist.m3u8",
+    "ibb_hidivkasri": f"{BASE}/hidivkasri.stream/playlist.m3u8",
+    "ibb_kucukcekmece": f"{BASE}/kucukcekmece.stream/playlist.m3u8",
+    "ibb_salacak": f"{BASE}/salacak.stream/playlist.m3u8",
+    "ibb_sarachane": f"{BASE}/sarachane.stream/playlist.m3u8",
+    "ibb_uskudar": f"{BASE}/uskudar.stream/playlist.m3u8",
 }
 
-# Headers koje browser šalje (po tvom Network screenshotu)
-IBB_HEADERS = (
-    "User-Agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 "
-    "(KHTML, like Gecko) Chrome/149.0.0.0 Safari/537.36"
-    "&Accept=*/*"
-    "&Accept-Language=en-US,en;q=0.9,bs;q=0.8"
-    "&Origin=https://istanbuluseyret.ibb.gov.tr"
-    "&Referer=https://istanbuluseyret.ibb.gov.tr/"
-    "&Sec-Fetch-Dest=empty"
-    "&Sec-Fetch-Mode=cors"
-    "&Sec-Fetch-Site=cross-site"
-)
+IBB_ITEMS = [
+    ("Istanbul - Eminonu (IBB LIVE)", "ibb_eminonu"),
+    ("Istanbul - Beyazit (IBB LIVE)", "ibb_beyazit"),
+    ("Istanbul - Sultanahmet 2 (IBB LIVE)", "ibb_sahmet"),
+    ("Istanbul - Metrohan (IBB LIVE)", "ibb_metrohan"),
+    ("Istanbul - Misir Carsi (IBB LIVE)", "ibb_kapalicarsi"),
+    ("Istanbul - Beyazit Kulesi 2 (IBB LIVE)", "ibb_bkulesi"),
+    ("Istanbul - Buyuk Camlica (IBB LIVE)", "ibb_camlica"),
+    ("Istanbul - Kadikoy (IBB LIVE)", "ibb_kadikoy"),
+    ("Istanbul - Ortakoy (IBB LIVE)", "ibb_ortakoy"),
+    ("Istanbul - Pierre Lotti (IBB LIVE)", "ibb_piereloti"),
+    ("Istanbul - Sultanahmet 1 (IBB LIVE)", "ibb_sahmet1"),
+    ("Istanbul - Taksim (IBB LIVE)", "ibb_taksim"),
+    ("Istanbul - Kiz Kulesi (IBB LIVE)", "ibb_kizkulesi"),
+    ("Istanbul - Anadolu Hisari (IBB LIVE)", "ibb_anadoluhisari"),
+    ("Istanbul - Eyup Sultan (IBB LIVE)", "ibb_eyupsultan"),
+    ("Istanbul - Hidiv Kasri (IBB LIVE)", "ibb_hidivkasri"),
+    ("Istanbul - Kucuk Cekmece (IBB LIVE)", "ibb_kucukcekmece"),
+    ("Istanbul - Salacak (IBB LIVE)", "ibb_salacak"),
+    ("Istanbul - Sarachane (IBB LIVE)", "ibb_sarachane"),
+    ("Istanbul - Uskudar (IBB LIVE)", "ibb_uskudar"),
+]
+
 
 def airport_variant(stream_url, mount):
     # mijenja /igaistanbul/<nesto>/ u /igaistanbul/<mount>/
-    return re.sub(r'(https://cdn-iga\.yayin\.com\.tr/igaistanbul/)[^/]+(/)', r'\1' + mount + r'\2', stream_url)
+    return re.sub(
+        r'(https://cdn-iga\.yayin\.com\.tr/igaistanbul/)[^/]+(/)',
+        r'\1' + mount + r'\2',
+        stream_url
+    )
 
 
 def http_get(url):
     headers = {
-        "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 "
-                      "(KHTML, like Gecko) Chrome/120.0 Safari/537.36",
+        "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) "
+                      "AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0 Safari/537.36",
         "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8",
         "Accept-Language": "en-US,en;q=0.9,tr;q=0.8"
     }
+
     req = urllib.request.Request(url, headers=headers)
     with urllib.request.urlopen(req, timeout=15) as resp:
         data = resp.read()
-    try:
-        return data.decode("utf-8", "ignore")
-    except Exception:
-        return data.decode("latin-1", "ignore")
+
+    return data.decode("utf-8", "ignore")
+
 
 def extract_m3u8(html):
     cleaned = html.replace("\\/", "/")
@@ -128,172 +122,69 @@ def extract_m3u8(html):
 
     return f"https://cdn-iga.yayin.com.tr/{path}?anahtar={anahtar}&sure={sure}"
 
+
 def get_airport_stream_url():
     html = http_get(PLAYER_URL)
     return extract_m3u8(html)
 
 
 def get_ibb_chunklist_url(playlist_url):
+    """
+    IBB playlist radi preko curl-like requesta.
+    Prvo uzmemo playlist.m3u8, iz njega izvucemo chunklist_w*.m3u8,
+    pa Kodi pustamo direktno na chunklist.
+    """
     headers = {
-        "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 "
-                      "(KHTML, like Gecko) Chrome/149.0.0.0 Safari/537.36",
-        "Accept": "*/*",
-        "Accept-Language": "en-US,en;q=0.9,bs;q=0.8",
-        "Referer": "https://istanbuluseyret.ibb.gov.tr/",
-        "Origin": "https://istanbuluseyret.ibb.gov.tr",
-        "Sec-Fetch-Dest": "empty",
-        "Sec-Fetch-Mode": "cors",
-        "Sec-Fetch-Site": "cross-site",
+        "User-Agent": "curl/8.19.0",
+        "Accept": "*/*"
     }
+
+    xbmc.log(f"[{ADDON_NAME}] Fetching IBB playlist: {playlist_url}", xbmc.LOGINFO)
 
     req = urllib.request.Request(playlist_url, headers=headers)
     with urllib.request.urlopen(req, timeout=15) as resp:
         txt = resp.read().decode("utf-8", "ignore")
 
-    chunklist_url = playlist_url
+    xbmc.log(f"[{ADDON_NAME}] IBB PLAYLIST CONTENT: {txt}", xbmc.LOGINFO)
+
     for line in txt.splitlines():
         line = line.strip()
         if line and not line.startswith("#"):
             chunklist_url = urllib.parse.urljoin(playlist_url, line)
-            break
+            xbmc.log(f"[{ADDON_NAME}] IBB CHUNKLIST URL: {chunklist_url}", xbmc.LOGINFO)
+            return chunklist_url
 
-    # drugi request, kao Chrome kada pređe sa playlist na chunklist
-    chunk_headers = {
-        "User-Agent": headers["User-Agent"],
-        "Accept": "*/*",
-        "Accept-Language": "en-US,en;q=0.9,bs;q=0.8",
-        "Referer": playlist_url,
-    }
+    xbmc.log(f"[{ADDON_NAME}] IBB chunklist not found, fallback to playlist", xbmc.LOGWARNING)
+    return playlist_url
 
-    req2 = urllib.request.Request(chunklist_url, headers=chunk_headers)
-    with urllib.request.urlopen(req2, timeout=15) as resp:
-        resp.read(1024)
-
-    return chunklist_url      
 
 def list_root():
     handle = int(sys.argv[1])
     xbmcplugin.setPluginCategory(handle, ADDON_NAME)
     xbmcplugin.setContent(handle, "videos")
 
-    liA = xbmcgui.ListItem(label="Istanbul Airport – Apron 2 (LIVE)")
-    liA.setInfo("video", {"title": "Istanbul Airport – Apron 2 (LIVE)"})
-    liA.setProperty("IsPlayable", "true")
-    xbmcplugin.addDirectoryItem(handle, sys.argv[0] + "?action=play&cam=airport_apron2", liA, False)
+    airport_items = [
+        ("Istanbul Airport - Apron 2 (LIVE)", "airport_apron2"),
+        ("Istanbul Airport - Apron (LIVE)", "airport_apron"),
+        ("Istanbul Airport - ApronG (LIVE)", "airport"),
+    ]
 
-    liB = xbmcgui.ListItem(label="Istanbul Airport – Apron (LIVE)")
-    liB.setInfo("video", {"title": "Istanbul Airport – Apron (LIVE)"})
-    liB.setProperty("IsPlayable", "true")
-    xbmcplugin.addDirectoryItem(handle, sys.argv[0] + "?action=play&cam=airport_apron", liB, False)
+    for label, cam in airport_items:
+        li = xbmcgui.ListItem(label=label)
+        li.setInfo("video", {"title": label})
+        li.setProperty("IsPlayable", "true")
+        url = sys.argv[0] + "?action=play&cam=" + cam
+        xbmcplugin.addDirectoryItem(handle, url, li, isFolder=False)
 
-
-    # 1) Airport
-    li1 = xbmcgui.ListItem(label="Istanbul Airport – ApronG (LIVE)")
-    li1.setInfo("video", {"title": "Istanbul Airport – ApronG (LIVE)"})
-    li1.setProperty("IsPlayable", "true")
-    url1 = sys.argv[0] + "?action=play&cam=airport"
-    xbmcplugin.addDirectoryItem(handle, url1, li1, isFolder=False)
-
-    # 3) IBB Beyazit
-    li3 = xbmcgui.ListItem(label="Istanbul – Beyazit (IBB LIVE)")
-    li3.setInfo("video", {"title": "Istanbul – Beyazit (IBB LIVE)"})
-    li3.setProperty("IsPlayable", "true")
-    url3 = sys.argv[0] + "?action=play&cam=ibb_beyazit"
-    xbmcplugin.addDirectoryItem(handle, url3, li3, isFolder=False)
-
-    # 4) IBB SAhmet
-    li4 = xbmcgui.ListItem(label="Istanbul – Sultanahmet (IBB LIVE)")
-    li4.setInfo("video", {"title": "Istanbul – Sultanahmet (IBB LIVE)"})
-    li4.setProperty("IsPlayable", "true")
-    url4 = sys.argv[0] + "?action=play&cam=ibb_sahmet"
-    xbmcplugin.addDirectoryItem(handle, url4, li4, isFolder=False)
-
-    # 6) IBB KCarsi
-    li6 = xbmcgui.ListItem(label="Istanbul – Misir Carsi (IBB LIVE)")
-    li6.setInfo("video", {"title": "Istanbul – KapaliCarsi (IBB LIVE)"})
-    li6.setProperty("IsPlayable", "true")
-    url6 = sys.argv[0] + "?action=play&cam=ibb_kapalicarsi"
-    xbmcplugin.addDirectoryItem(handle, url6, li6, isFolder=False)
-
-    li7 = xbmcgui.ListItem(label="Istanbul – Beyazit kulesi (IBB LIVE)")
-    li7.setInfo("video", {"title": "Istanbul – Beyazit kulesi (IBB LIVE)"})
-    li7.setProperty("IsPlayable", "true")
-    url7 = sys.argv[0] + "?action=play&cam=ibb_bkulesi"
-    xbmcplugin.addDirectoryItem(handle, url7, li7, isFolder=False)
-
-    li8 = xbmcgui.ListItem(label="Istanbul – Buyuk camlica (IBB LIVE)")
-    li8.setInfo("video", {"title": "Istanbul – Buyuk camlica (IBB LIVE)"})
-    li8.setProperty("IsPlayable", "true")
-    url8 = sys.argv[0] + "?action=play&cam=ibb_camlica"
-    xbmcplugin.addDirectoryItem(handle, url8, li8, isFolder=False)
-
-    li11 = xbmcgui.ListItem(label="Istanbul – Pierre lotti (IBB LIVE)")
-    li11.setInfo("video", {"title": "Istanbul – Pierre lotti (IBB LIVE)"})
-    li11.setProperty("IsPlayable", "true")
-    url11 = sys.argv[0] + "?action=play&cam=ibb_piereloti"
-    xbmcplugin.addDirectoryItem(handle, url11, li11, isFolder=False)
-
-    li12 = xbmcgui.ListItem(label="Istanbul – Sultanahmet1 (IBB LIVE)")
-    li12.setInfo("video", {"title": "Istanbul – Sultanahmet1 (IBB LIVE)"})
-    li12.setProperty("IsPlayable", "true")
-    url12 = sys.argv[0] + "?action=play&cam=ibb_sahmet1"
-    xbmcplugin.addDirectoryItem(handle, url12, li12, isFolder=False)
-
-    li13 = xbmcgui.ListItem(label="Istanbul – Taksim (IBB LIVE)")
-    li13.setInfo("video", {"title": "Istanbul – Taksim (IBB LIVE)"})
-    li13.setProperty("IsPlayable", "true")
-    url13 = sys.argv[0] + "?action=play&cam=ibb_taksim"
-    xbmcplugin.addDirectoryItem(handle, url13, li13, isFolder=False)
-
-    li14 = xbmcgui.ListItem(label="Istanbul – Kiz Kulesi (IBB LIVE)")
-    li14.setInfo("video", {"title": "Istanbul – Kiz Kulesi (IBB LIVE)"})
-    li14.setProperty("IsPlayable", "true")
-    url14 = sys.argv[0] + "?action=play&cam=ibb_kizkulesi"
-    xbmcplugin.addDirectoryItem(handle, url14, li14, isFolder=False)
-
-    li15 = xbmcgui.ListItem(label="Istanbul – Anadolu Hisari (IBB LIVE)")
-    li15.setInfo("video", {"title": "Istanbul – Anadolu Hisari (IBB LIVE)"})
-    li15.setProperty("IsPlayable", "true")
-    url15 = sys.argv[0] + "?action=play&cam=ibb_anadoluhisari"
-    xbmcplugin.addDirectoryItem(handle, url15, li15, isFolder=False)
-
-    li16 = xbmcgui.ListItem(label="Istanbul – Eyup Sultan (IBB LIVE)")
-    li16.setInfo("video", {"title": "Istanbul – Eyup Sultan (IBB LIVE)"})
-    li16.setProperty("IsPlayable", "true")
-    url16 = sys.argv[0] + "?action=play&cam=ibb_eyupsultan"
-    xbmcplugin.addDirectoryItem(handle, url16, li16, isFolder=False)
-
-    li17 = xbmcgui.ListItem(label="Istanbul – Hidiv Kasri (IBB LIVE)")
-    li17.setInfo("video", {"title": "Istanbul – Hidiv Kasri (IBB LIVE)"})
-    li17.setProperty("IsPlayable", "true")
-    url17 = sys.argv[0] + "?action=play&cam=ibb_hidivkasri"
-    xbmcplugin.addDirectoryItem(handle, url17, li17, isFolder=False)
-
-    li18 = xbmcgui.ListItem(label="Istanbul – Kucuk Cekmece (IBB LIVE)")
-    li18.setInfo("video", {"title": "Istanbul – Kucuk Cekmece (IBB LIVE)"})
-    li18.setProperty("IsPlayable", "true")
-    url18 = sys.argv[0] + "?action=play&cam=ibb_kucukcekmece"
-    xbmcplugin.addDirectoryItem(handle, url18, li18, isFolder=False)
-
-    li19 = xbmcgui.ListItem(label="Istanbul – Salacak (IBB LIVE)")
-    li19.setInfo("video", {"title": "Istanbul – Salacak (IBB LIVE)"})
-    li19.setProperty("IsPlayable", "true")
-    url19 = sys.argv[0] + "?action=play&cam=ibb_salacak"
-    xbmcplugin.addDirectoryItem(handle, url19, li19, isFolder=False)
-
-    li20 = xbmcgui.ListItem(label="Istanbul – Sarachane (IBB LIVE)")
-    li20.setInfo("video", {"title": "Istanbul – Sarachane (IBB LIVE)"})
-    li20.setProperty("IsPlayable", "true")
-    url20 = sys.argv[0] + "?action=play&cam=ibb_sarachane"
-    xbmcplugin.addDirectoryItem(handle, url20, li20, isFolder=False)
-
-    li21 = xbmcgui.ListItem(label="Istanbul – Uskudar (IBB LIVE)")
-    li21.setInfo("video", {"title": "Istanbul – Uskudar (IBB LIVE)"})
-    li21.setProperty("IsPlayable", "true")
-    url21 = sys.argv[0] + "?action=play&cam=ibb_uskudar"
-    xbmcplugin.addDirectoryItem(handle, url21, li21, isFolder=False)
+    for label, cam in IBB_ITEMS:
+        li = xbmcgui.ListItem(label=label)
+        li.setInfo("video", {"title": label})
+        li.setProperty("IsPlayable", "true")
+        url = sys.argv[0] + "?action=play&cam=" + cam
+        xbmcplugin.addDirectoryItem(handle, url, li, isFolder=False)
 
     xbmcplugin.endOfDirectory(handle)
+
 
 def play(cam):
     handle = int(sys.argv[1])
@@ -309,23 +200,21 @@ def play(cam):
             chunklist_url = playlist_url
 
         headers = (
-            "User-Agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 "
-            "(KHTML, like Gecko) Chrome/149.0.0.0 Safari/537.36"
+            "User-Agent=curl/8.19.0"
             "&Accept=*/*"
-            "&Accept-Language=en-US,en;q=0.9,bs;q=0.8"
             "&Referer=" + urllib.parse.quote(playlist_url, safe="")
         )
 
-        url = chunklist_url + "|" + headers
-        xbmc.log(f"[{ADDON_NAME}] Playing {cam}: {url}", xbmc.LOGINFO)
+        final_url = chunklist_url + "|" + headers
+        xbmc.log(f"[{ADDON_NAME}] IBB FINAL URL: {final_url}", xbmc.LOGINFO)
 
-        li = xbmcgui.ListItem(path=url)
+        li = xbmcgui.ListItem(path=final_url)
         li.setProperty("IsPlayable", "true")
         li.setMimeType("application/vnd.apple.mpegurl")
         xbmcplugin.setResolvedUrl(handle, True, li)
         return
 
-    # Airport cams
+    # Airport cams (dynamic token)
     stream_url = None
     try:
         stream_url = get_airport_stream_url()
@@ -348,8 +237,8 @@ def play(cam):
         stream_url = airport_variant(stream_url, "apron2")
 
     airport_headers = (
-        "User-Agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 "
-        "(KHTML, like Gecko) Chrome/120.0 Safari/537.36"
+        "User-Agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64) "
+        "AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0 Safari/537.36"
         "&Referer=https://play28.player.im/"
         "&Origin=https://play28.player.im"
     )
@@ -359,13 +248,13 @@ def play(cam):
     xbmcplugin.setResolvedUrl(handle, True, li)
 
 
-
 def router(paramstring):
     params = dict(urllib.parse.parse_qsl(paramstring.lstrip("?")))
     if params.get("action") == "play":
         play(params.get("cam", "airport"))
     else:
         list_root()
+
 
 if __name__ == "__main__":
     router(sys.argv[2] if len(sys.argv) > 2 else "")
